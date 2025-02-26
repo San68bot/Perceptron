@@ -61,7 +61,3 @@ The Perceptron Convergence Theorem guarantees convergence if the data is linearl
 - Compare with kernelized or multi-layer Perceptrons.
 - Integrate additional datasets for robustness analysis.
 - Study the impact of learning rates and stochastic updates.
-
----
-
-🔬 **Research-Centric Design**: This project emphasizes empirical analysis of the Perceptron's limitations and strengths, aligning with classical machine learning research. Contributions and citations are welcome!
