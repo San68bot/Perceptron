@@ -1,25 +1,29 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# load all of our data and separate between input point and label
 def load_data(filename):
     data = np.loadtxt(filename)
     X = data[:, :2]
     y = data[:, 2].astype(int)
     return X, y
 
+# add a bias 1 term to the input data so its easier for dot product
 def add_bias(X):
     return np.hstack((X, np.ones((X.shape[0], 1))))
 
+# predict the output
 def predict(w, X):
     return (np.dot(X, w) >= 0).astype(int)
 
+# train the perceptron with all of the train sets
 def train_perceptron(X, y, max_iterations=100):
     n_samples, n_features = X.shape
     w = np.random.randn(n_features)
     iterations = 0
     completed = False
 
-    while not completed and iterations < max_iterations:
+    while not completed and iterations < max_iterations: # keep loooping until we get an iteration that doesnt have any changes to the weights
         completed = True
         for i in range(n_samples):
             xi = X[i]
@@ -38,6 +42,8 @@ def train_perceptron(X, y, max_iterations=100):
         iterations += 1
     return w, iterations
 
+# plot the decision boundary uses the weights
+# https://www.youtube.com/watch?v=fPT8VeuFRkU
 def plot_decision_boundary(ax, w, xlim, label='Decision Boundary'):
     x_vals = np.linspace(xlim[0], xlim[1], 200)
     if np.abs(w[1]) > 1e-6:
@@ -55,14 +61,14 @@ def main():
     X_test_bias = add_bias(X_test)
 
     error_rates = []
-    epoch_counts = []
+    iteration_counts = []
 
     for i, train_file in enumerate(training_files, start=1):
         X_train, y_train = load_data(train_file)
         X_train_bias = add_bias(X_train)
 
         w, iterations = train_perceptron(X_train_bias, y_train)
-        epoch_counts.append(iterations)
+        iteration_counts.append(iterations)
 
         predictions = predict(w, X_test_bias)
         error_rate = np.mean(predictions != y_test)
@@ -96,7 +102,7 @@ def main():
         plt.show()
 
     print("\nSummary of Training:")
-    for i, (ep, err) in enumerate(zip(epoch_counts, error_rates), start=1):
+    for i, (ep, err) in enumerate(zip(iteration_counts, error_rates), start=1):
         print(f"Set {i}: iterations = {ep}, Test Error Rate = {err:.3f}")
 
 if __name__ == "__main__":
