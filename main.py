@@ -46,10 +46,14 @@ def train_perceptron(X, y, max_iterations=100):
 # https://www.youtube.com/watch?v=fPT8VeuFRkU
 def plot_decision_boundary(ax, w, xlim, label='Decision Boundary'):
     x_vals = np.linspace(xlim[0], xlim[1], 200)
+    # w[0] -> weight for x1
+    # w[1] -> weight for x2
+    # w[2] -> bias term
     if np.abs(w[1]) > 1e-6:
         y_vals = -(w[0] * x_vals + w[2]) / w[1]
         ax.plot(x_vals, y_vals, 'k-', label=label)
     else:
+        # If w[1] is effectively zero, boundary is vertical: w[0]*x + w[2] = 0
         x_line = -w[2] / w[0]
         ax.axvline(x=x_line, color='k', label=label)
 
