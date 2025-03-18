@@ -46,9 +46,6 @@ def train_perceptron(X, y, max_iterations=100):
 # https://www.youtube.com/watch?v=fPT8VeuFRkU
 def plot_decision_boundary(ax, w, xlim, label='Decision Boundary'):
     x_vals = np.linspace(xlim[0], xlim[1], 200)
-    # w[0] -> weight for x1
-    # w[1] -> weight for x2
-    # w[2] -> bias term
     if np.abs(w[1]) > 1e-6:
         y_vals = -(w[0] * x_vals + w[2]) / w[1]
         ax.plot(x_vals, y_vals, 'k-', label=label)
@@ -71,9 +68,11 @@ def main():
         X_train, y_train = load_data(train_file)
         X_train_bias = add_bias(X_train)
 
+        # train the perceptron with the training set
         w, iterations = train_perceptron(X_train_bias, y_train)
         iteration_counts.append(iterations)
 
+        # use the training set to predict on the test set
         predictions = predict(w, X_test_bias)
         error_rate = np.mean(predictions != y_test)
         error_rates.append(error_rate)
@@ -105,6 +104,7 @@ def main():
         plt.savefig(f"plots/perceptron_set{i}.png")
         plt.show()
 
+    # summary anf the tresults
     print("\nSummary of Training:")
     for i, (ep, err) in enumerate(zip(iteration_counts, error_rates), start=1):
         print(f"Set {i}: iterations = {ep}, Test Error Rate = {err:.3f}")
